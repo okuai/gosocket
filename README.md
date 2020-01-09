@@ -19,7 +19,6 @@ go get github.com/danbaise/gosocket
 
 #### echo server
 ```go
-
 type events struct {}
 
 func (e *events) OnConnect(c *gosocket.Conn) {
@@ -28,10 +27,10 @@ func (e *events) OnConnect(c *gosocket.Conn) {
 
 func (e *events) OnMessage(c *gosocket.Conn, packet gosocket.Packeter) {
 	p := packet.(*protocol.TLV)
-	if p.Tag == 1001 {
+	if p.Tag == 0x01 {
 		fmt.Println(p.Tag, string(p.Value))
 		send := []byte("pong")
-		s := &protocol.TLV{Tag: 1002, Length: uint32(len(send)), Value: send}
+		s := &protocol.TLV{Tag: 0x01, Length: uint32(len(send)), Value: send}
 		err := c.AsyncWrite(s, time.Second)
 		if err != nil {
 			log.Println(err)
@@ -72,8 +71,6 @@ func main() {
 	server.Stop()
 
 }
-
-}
 ```
 
 #### echo client
@@ -87,25 +84,7 @@ func (e *events) OnConnect(c *gosocket.Conn) {
 
 func (e *events) OnMessage(c *gosocket.Conn, packet gosocket.Packeter) {
 	p := packet.(*protocol.TLV)
-	if p.Tag == 1002 {
-		fmt.Println(p.Tag, string(p.Value))
-	}
-}
-
-func (e *events) OnClose(c *gosocket.Conn) {
-	fmt.Println("client stop")
-}
-
-func main() {
-type events struct {}
-
-func (e *events) OnConnect(c *gosocket.Conn) {
-	fmt.Println("connect:", c.RawConn().RemoteAddr())
-}
-
-func (e *events) OnMessage(c *gosocket.Conn, packet gosocket.Packeter) {
-	p := packet.(*protocol.TLV)
-	if p.Tag == 1002 {
+	if p.Tag == 0x01 {
 		fmt.Println(p.Tag, string(p.Value))
 	}
 }
@@ -134,7 +113,7 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		sendStringValue := []byte("ping")
-		t := &protocol.TLV{Tag: 1001, Length: uint32(len(sendStringValue)), Value: sendStringValue}
+		t := &protocol.TLV{Tag: 0x01, Length: uint32(len(sendStringValue)), Value: sendStringValue}
 		err := client.Conn.AsyncWrite(t, time.Second)
 		if err != nil {
 			log.Println(err)
@@ -148,6 +127,7 @@ func main() {
 
 	client.Stop()
 }
+
 
 
 ```

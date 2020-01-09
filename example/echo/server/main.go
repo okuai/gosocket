@@ -21,10 +21,10 @@ func (e *events) OnConnect(c *gosocket.Conn) {
 
 func (e *events) OnMessage(c *gosocket.Conn, packet gosocket.Packeter) {
 	p := packet.(*protocol.TLV)
-	if p.Tag == 1001 {
+	if p.Tag == 0x01 {
 		fmt.Println(p.Tag, string(p.Value))
 		send := []byte("pong")
-		s := &protocol.TLV{Tag: 1002, Length: uint32(len(send)), Value: send}
+		s := &protocol.TLV{Tag: 0x01, Length: uint32(len(send)), Value: send}
 		err := c.AsyncWrite(s, time.Second)
 		if err != nil {
 			log.Println(err)

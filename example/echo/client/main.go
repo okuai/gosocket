@@ -21,7 +21,7 @@ func (e *events) OnConnect(c *gosocket.Conn) {
 
 func (e *events) OnMessage(c *gosocket.Conn, packet gosocket.Packeter) {
 	p := packet.(*protocol.TLV)
-	if p.Tag == 1002 {
+	if p.Tag == 0x01 {
 		fmt.Println(p.Tag, string(p.Value))
 	}
 }
@@ -50,7 +50,7 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		sendStringValue := []byte("ping")
-		t := &protocol.TLV{Tag: 1001, Length: uint32(len(sendStringValue)), Value: sendStringValue}
+		t := &protocol.TLV{Tag: 0x01, Length: uint32(len(sendStringValue)), Value: sendStringValue}
 		err := client.Conn.AsyncWrite(t, time.Second)
 		if err != nil {
 			log.Println(err)
