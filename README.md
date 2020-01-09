@@ -13,10 +13,6 @@ go get github.com/danbaise/gosocket
 
 
 ### Examples
-
-* [echo](https://github.com/danbaise/gosocket/tree/master/example/echo)
-* [protobuf](https://github.com/danbaise/gosocket-demo/tree/master/protobuf)
-
 #### echo server
 ```go
 type events struct {}
