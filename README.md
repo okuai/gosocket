@@ -1,6 +1,6 @@
 gosocket
 ================
-quickly building go tcp server or client, a simple go socket
+quickly building go tcp server or client, a simple go socket 
 
 Usage
 ================
